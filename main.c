@@ -1,43 +1,28 @@
-//#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sched.h>
-#include <unistd.h>
-
-typedef struct Process*
-{
-	char Name[32] ;
-	int ReadyTime ;
-	int ExecutionTime ;
-	pid_t PID ;
-}Proc;
+#include "headers.h"
 
 int main(int argc, char** argv)
 {
 	char Policy[10] ;
 	int ProcessNum ;
 
-	scanf("%s", Policy);
-	scanf("%d", &ProcessNum) ;
+	scanf("%s %d", Policy, &ProcessNum) ;
 
-	struct Proc* Queue = (Proc*)malloc(ProcessNum * sizeof(Proc)) ;
+	struct Process* Queue = (struct Process*)malloc(ProcessNum * sizeof(struct Process)) ;
 
 	for(int i = 0 ; i < ProcessNum ; i++)
-		scanf("%s %d %d", Queue[i].name, Queue[i].ReadyTime, Queue[i].ExecutionTime) ;
+	{
+		scanf("%s %d %d", Queue[i].Name, &Queue[i].ReadyTime, &Queue[i].ExecutionTime) ;
+		Queue[i].StartTime = -1 ;
+	}
 
-	if(strcmp(Policy, "FIFO") == 0)
-	else if(strcmp(Policy, "RR") == 0)
-	else if(strcmp(Policy, "SJF") == 0)
-	else if(strcmp(Policy, "PSJF") == 0)
-	else 
+	if(strcmp(Policy, "FIFO") != 0 && strcmp(Policy, "RR") != 0 &&
+	   strcmp(Policy, "SJF") != 0 && strcmp(Policy, "PSJF") != 0)
 	{
 		fprintf(stderr, "%s\n", "Invalid policy");
 		exit(0) ;
 	}
+	
+	Schedule(Queue, ProcessNum, Policy) ;
 
-
-
-	exit(0) ;
 	return 0 ;
 }
