@@ -37,9 +37,9 @@ void Schedule(struct Process* Queue, int N, char* Policy)
 							Queue[IsProcessing].StartTime % 1000000000ll,
 							Queue[IsProcessing].EndTime   / 1000000000ll, 
 							Queue[IsProcessing].EndTime   % 1000000000ll) ;
-			printf("%s", dmesg);
-			//syscall(MYPRINT, dmesg) ;
-			
+			//printf("%s", dmesg);
+			syscall(MYPRINT, dmesg) ;
+
 			PreProcessing = IsProcessing ;
 			IsProcessing = -1 ;
 			cnt++ ;
@@ -52,7 +52,6 @@ void Schedule(struct Process* Queue, int N, char* Policy)
 			{
 				Queue[i].PID = Create(Queue[i]) ;
 				SetScheduler(Queue[i].PID, 1) ;
-				printf("%s %d\n", Queue[i].Name, Queue[i].PID);
 			}
 
 		int NextProcess = Next(Queue, N, Policy) ;
